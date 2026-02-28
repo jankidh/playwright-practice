@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { test, expect } from "@playwright/test";
 import { baseUrl, userId, userSecretKey } from "../constants.js";
 
