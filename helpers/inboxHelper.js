@@ -36,5 +36,5 @@ export const findVerCode = async (page, context) => {
   const code = await codeLocator.textContent();
   await inboxPage.close();
   await page.bringToFront();
-  return code;
+  return code.trim();
 };

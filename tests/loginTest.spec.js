@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "../helpers/loginHelper";
-import { findVerCode } from "../helpers/inboxHelper";
+import { login, loginWithVerifCode } from "../helpers/loginHelper.js";
 
 test("Empty email address validation", async ({ page }) => {
   const frame = await login(page, { email: "" });
@@ -32,13 +31,8 @@ test("Invalid credential", async ({ page }) => {
   );
 });
 
-test.only("Successfull login with valid credentials", async ({
-  page,
-  context,
-}) => {
-  const frame = await login(page);
-  await expect(frame.locator('input[type="text"]')).toBeVisible({
-    timeout: 10000,
-  });
-  const verifCode = await findVerCode(page, context);
+test("Successfull login with valid credentials", async ({ page, context }) => {
+  test.setTimeout(180_000);
+  await loginWithVerifCode(page, context);
+  // await page.pause();
 });

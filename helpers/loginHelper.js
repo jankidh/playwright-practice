@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 import { baseUrl, userId, userSecretKey } from "../constants.js";
+import { findVerCode } from "./inboxHelper.js";
 
 export const login = async (
   page,
@@ -26,4 +27,29 @@ export const login = async (
   await submitButton.click();
 
   return frame;
+};
+
+export const registerDeviceForlogin = async (page, code) => {
+  const frame = page.frameLocator('iframe[data-ref="kyc-iframe"]');
+
+  const verifCodeInput = frame.locator('input[type="text"]');
+  const continueButton = frame.locator(
+    'button[data-ref="email-verification-continue"]',
+  );
+
+  await verifCodeInput.fill(code);
+  await continueButton.click();
+};
+
+export const loginWithVerifCode = async (page, context) => {
+  const frame = await login(page);
+  await expect(frame.locator('input[type="text"]')).toBeVisible({
+    timeout: 10000,
+  });
+  const verifCode = await findVerCode(page, context);
+  console.log(verifCode);
+  await registerDeviceForlogin(page, verifCode);
+  await expect(
+    page.locator('//header//button[contains(@class, "log-out")]'),
+  ).toBeVisible();
 };
