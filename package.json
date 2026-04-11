@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "headed": "npm run test -- --headed"
+    "headed": "npm run test -- --headed",
+    "debug": "npm run headed -- --debug",
+    "debugTest": "npm run headed tests/loginTest.spec.js"
   },
   "keywords": [],
   "author": "",
