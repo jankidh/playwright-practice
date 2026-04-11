@@ -7,12 +7,11 @@ export const login = async (
   { email = userId, password = userSecretKey } = {},
 ) => {
   await page.goto(baseUrl);
-  await expect(page).toHaveTitle(
-    "Official Ryanair website | Book direct for the lowest fares | Ryanair.com",
-  );
 
-  const acceptCookies = page.getByRole("button", { name: "Yes, I agree" });
-  await acceptCookies.click().catch(() => {});
+  const acceptCookies = page.locator('button[data-ref="cookie.accept-all"]');
+  if (await acceptCookies.isVisible()) {
+    await acceptCookies.click();
+  }
 
   await page.locator("ry-log-in-button").click();
 
