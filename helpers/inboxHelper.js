@@ -12,13 +12,13 @@ export const findVerCode = async (page, context) => {
 
   await expect(inboxPage).toHaveTitle("Mailinator");
 
-  // finding the last email
+  //finding the last email
   const verifCodeEmail = inboxPage.locator(
     "//tr[1]/td[3][contains(.,'Verification code')]",
   );
   await verifCodeEmail.isVisible();
 
-  // Click the email opens a NEW page
+  //click the email opens a new page
   const emailPage = await Promise.all([
     inboxPage.waitForURL(
       (url) => url.searchParams.has("msgid") && !url.searchParams.has("to"),
@@ -27,7 +27,7 @@ export const findVerCode = async (page, context) => {
     verifCodeEmail.click(),
   ]).then(() => inboxPage);
 
-  // Access the iframe containing the email body
+  //access the iframe containing the email body
   const frame = emailPage.frameLocator("#html_msg_body");
   const codeLocator = frame.locator("//table[3]/tbody/tr/td[contains(.,' ')]");
 

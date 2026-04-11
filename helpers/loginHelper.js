@@ -47,7 +47,6 @@ export const loginWithVerifCode = async (page, context) => {
     timeout: 10000,
   });
   const verifCode = await findVerCode(page, context);
-  console.log(verifCode);
   await registerDeviceForlogin(page, verifCode);
   await expect(
     page.locator('//header//button[contains(@class, "log-out")]'),

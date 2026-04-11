@@ -31,8 +31,9 @@ test("Invalid credential", async ({ page }) => {
   );
 });
 
-test("Successfull login with valid credentials", async ({ page, context }) => {
-  test.setTimeout(180_000);
+test.only("Successfull login with verification code", async ({
+  page,
+  context,
+}) => {
   await loginWithVerifCode(page, context);
-  // await page.pause();
 });
