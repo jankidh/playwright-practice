@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 import { inboxUrl } from "../constants.js";
+import inboxPageElements from "../pageElements/inboxPage.json" assert { type: "json" };
 
 export const findVerCode = async (page, context) => {
   //open new tab with malinator
@@ -14,7 +15,7 @@ export const findVerCode = async (page, context) => {
 
   //finding the last email
   const verifCodeEmail = inboxPage.locator(
-    "//tr[1]/td[3][contains(.,'Verification code')]",
+    inboxPageElements.latestVerificationEmail,
   );
   await verifCodeEmail.isVisible();
 
@@ -28,8 +29,8 @@ export const findVerCode = async (page, context) => {
   ]).then(() => inboxPage);
 
   //access the iframe containing the email body
-  const frame = emailPage.frameLocator("#html_msg_body");
-  const codeLocator = frame.locator("//table[3]/tbody/tr/td[contains(.,' ')]");
+  const frame = emailPage.frameLocator(inboxPageElements.iframe);
+  const codeLocator = frame.locator(inboxPageElements.verificationCode);
 
   await codeLocator.scrollIntoViewIfNeeded();
 

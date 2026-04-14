@@ -1,0 +1,16 @@
+{
+  "acceptCookiesButton": "button[data-ref='cookie.accept-all']",
+  "loginButton": "ry-log-in-button",
+  "iframe": "iframe[data-ref='kyc-iframe']",
+
+  "emailInput": "input[name='email']",
+  "passwordInput": "input[name='password']",
+  "submitButton": "button[type='submit']",
+
+  "verificationCodeInput": "input[type='text']",
+  "continueButton": "button[data-ref='email-verification-continue']",
+
+  "errorMessage": "span._error",
+
+  "logoutButton": "//header//button[contains(@class,'log-out')]"
+}
