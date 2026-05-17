@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 import { inboxUrl } from "../constants.js";
-import inboxPageElements from "../pageElements/inboxPage.json" assert { type: "json" };
+import inboxPageElements from "../pageElements/mailinator/inboxPage.json" assert { type: "json" };
 
 export const findVerCode = async (page, context) => {
   //open new tab with malinator

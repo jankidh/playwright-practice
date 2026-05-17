@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { baseUrl, userId, userSecretKey } from "../constants.js";
 import { findVerCode } from "./inboxHelper.js";
-import loginPageElements from "../pageElements/loginPage.json" assert { type: "json" };
+import loginPageElements from "../pageElements/app/loginPage.json" assert { type: "json" };
 
 export const login = async (
   page,
@@ -40,15 +40,23 @@ export const registerDeviceForlogin = async (page, code) => {
 };
 
 export const submitCodeWithRetry = async (page, context, maxAttempts = 5) => {
-  for (let i = 1; i < maxAttempts; i++) {
+  for (let i = 0; i < maxAttempts; i++) {
     const verifCode = await findVerCode(page, context);
     await registerDeviceForlogin(page, verifCode);
-
+    await page.pause();
     const frame = page.frameLocator(loginPageElements.iframe);
-    if (await frame.isVisible()) {
-      const errorMessage = frame.locator(loginPageElements.errorMessage);
-      if (!(await errorMessage.isVisible())) return;
-    }
+    const isIframeExists = frame.count() > 0;
+
+    console.log(isIframeExists);
+    // try {
+    //   const frame = page.frameLocator(loginPageElements.iframe);
+    //   await frame.isVisible();
+    //   const errorMessage = frame.locator(loginPageElements.errorMessage);
+    //   await errorMessage.isVisible();
+    // } catch (error) {
+    //   console.log(error);
+    //   break;
+    // }
   }
 };
 
