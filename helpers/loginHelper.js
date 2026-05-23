@@ -9,9 +9,9 @@ export const login = async (
   await page.goto(baseUrl);
 
   const acceptCookies = page.locator('button[data-ref="cookie.accept-all"]');
-  if (await acceptCookies.isVisible()) {
+  await page.addLocatorHandler(acceptCookies, async () => {
     await acceptCookies.click();
-  }
+  });
 
   await page.locator("ry-log-in-button").click();
 
@@ -35,9 +35,17 @@ export const registerDeviceForlogin = async (page, code) => {
   const continueButton = frame.locator(
     'button[data-ref="email-verification-continue"]',
   );
+  const errorMessage = frame.locator("span._error");
 
-  await verifCodeInput.fill(code);
+  await verifCodeInput.fill(code.trim());
   await continueButton.click();
+
+  const hasError = await errorMessage
+    .waitFor({ state: "visible", timeout: 5000 })
+    .then(() => true)
+    .catch(() => false);
+
+  return !hasError;
 };
 
 export const loginWithVerifCode = async (page, context) => {
@@ -45,8 +53,25 @@ export const loginWithVerifCode = async (page, context) => {
   await expect(frame.locator('input[type="text"]')).toBeVisible({
     timeout: 10000,
   });
-  const verifCode = await findVerCode(page, context);
-  await registerDeviceForlogin(page, verifCode);
+
+  let verifCode = await findVerCode(page, context);
+  const success = await registerDeviceForlogin(page, verifCode);
+
+  if (!success) {
+    const oldVerCode = verifCode;
+    const maxAttempts = 5;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      await page.waitForTimeout(30_000 * attempt);
+      verifCode = await findVerCode(page, context);
+      if (verifCode !== oldVerCode) break;
+      if (attempt === maxAttempts)
+        throw new Error(`Fresh verification code not received after ${maxAttempts} attempts`);
+    }
+
+    await registerDeviceForlogin(page, verifCode);
+  }
+
   await expect(
     page.locator('//header//button[contains(@class, "log-out")]'),
   ).toBeVisible();
