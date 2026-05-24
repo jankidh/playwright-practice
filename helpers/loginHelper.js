@@ -10,9 +10,9 @@ export const login = async (
   await page.goto(baseUrl);
 
   const acceptCookies = page.locator(loginPageElements.acceptCookiesButton);
-  if (await acceptCookies.isVisible()) {
+  await page.addLocatorHandler(acceptCookies, async () => {
     await acceptCookies.click();
-  }
+  });
 
   await page.locator(loginPageElements.loginButton).click();
 
@@ -34,41 +34,44 @@ export const registerDeviceForlogin = async (page, code) => {
 
   const verifCodeInput = frame.locator(loginPageElements.verificationCodeInput);
   const continueButton = frame.locator(loginPageElements.continueButton);
+  const errorMessage = frame.locator(loginPageElements.errorMessage);
 
   await verifCodeInput.fill(code);
   await continueButton.click();
-};
 
-export const submitCodeWithRetry = async (page, context, maxAttempts = 5) => {
-  for (let i = 0; i < maxAttempts; i++) {
-    const verifCode = await findVerCode(page, context);
-    await registerDeviceForlogin(page, verifCode);
-    await page.pause();
-    const frame = page.frameLocator(loginPageElements.iframe);
-    const isIframeExists = frame.count() > 0;
+  const hasError = await errorMessage
+    .waitFor({ state: "visible", timeout: 5000 })
+    .then(() => true)
+    .catch(() => false);
 
-    console.log(isIframeExists);
-    // try {
-    //   const frame = page.frameLocator(loginPageElements.iframe);
-    //   await frame.isVisible();
-    //   const errorMessage = frame.locator(loginPageElements.errorMessage);
-    //   await errorMessage.isVisible();
-    // } catch (error) {
-    //   console.log(error);
-    //   break;
-    // }
-  }
+  return !hasError;
 };
 
 export const loginWithVerifCode = async (page, context) => {
   const frame = await login(page);
-  await expect(
-    frame.locator(loginPageElements.verificationCodeInput),
-  ).toBeVisible({
+  await expect(frame.locator(loginPageElements.emailInput)).toBeVisible({
     timeout: 10000,
   });
 
-  await submitCodeWithRetry(page, context);
+  let verifCode = await findVerCode(page, context);
+  const success = await registerDeviceForlogin(page, verifCode);
+
+  if (!success) {
+    const oldVerCode = verifCode;
+    const maxAttempts = 5;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      await page.waitForTimeout(30_000 * attempt);
+      verifCode = await findVerCode(page, context);
+      if (verifCode !== oldVerCode) break;
+      if (attempt === maxAttempts)
+        throw new Error(
+          `Fresh verification code not received after ${maxAttempts} attempts`,
+        );
+    }
+
+    await registerDeviceForlogin(page, verifCode);
+  }
 
   await expect(page.locator(loginPageElements.logoutButton)).toBeVisible();
 };
