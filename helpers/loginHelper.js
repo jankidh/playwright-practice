@@ -1,6 +1,7 @@
 import { expect } from "@playwright/test";
 import { baseUrl, userId, userSecretKey } from "../constants.js";
 import { findVerCode } from "./inboxHelper.js";
+import loginPageElements from "../pageElements/app/loginPage.json" assert { type: "json" };
 
 export const login = async (
   page,
@@ -8,18 +9,18 @@ export const login = async (
 ) => {
   await page.goto(baseUrl);
 
-  const acceptCookies = page.locator('button[data-ref="cookie.accept-all"]');
+  const acceptCookies = page.locator(loginPageElements.acceptCookiesButton);
   await page.addLocatorHandler(acceptCookies, async () => {
     await acceptCookies.click();
   });
 
-  await page.locator("ry-log-in-button").click();
+  await page.locator(loginPageElements.loginButton).click();
 
-  const frame = page.frameLocator('iframe[data-ref="kyc-iframe"]');
+  const frame = page.frameLocator(loginPageElements.iframe);
 
-  const emailInput = frame.locator('input[name="email"]');
-  const passwordInput = frame.locator('input[name="password"]');
-  const submitButton = frame.locator('button[type="submit"]');
+  const emailInput = frame.locator(loginPageElements.emailInput);
+  const passwordInput = frame.locator(loginPageElements.passwordInput);
+  const submitButton = frame.locator(loginPageElements.submitButton);
 
   await emailInput.fill(email);
   await passwordInput.fill(password);
@@ -29,15 +30,13 @@ export const login = async (
 };
 
 export const registerDeviceForlogin = async (page, code) => {
-  const frame = page.frameLocator('iframe[data-ref="kyc-iframe"]');
+  const frame = page.frameLocator(loginPageElements.iframe);
 
-  const verifCodeInput = frame.locator('input[type="text"]');
-  const continueButton = frame.locator(
-    'button[data-ref="email-verification-continue"]',
-  );
-  const errorMessage = frame.locator("span._error");
+  const verifCodeInput = frame.locator(loginPageElements.verificationCodeInput);
+  const continueButton = frame.locator(loginPageElements.continueButton);
+  const errorMessage = frame.locator(loginPageElements.errorMessage);
 
-  await verifCodeInput.fill(code.trim());
+  await verifCodeInput.fill(code);
   await continueButton.click();
 
   const hasError = await errorMessage
@@ -50,7 +49,7 @@ export const registerDeviceForlogin = async (page, code) => {
 
 export const loginWithVerifCode = async (page, context) => {
   const frame = await login(page);
-  await expect(frame.locator('input[type="text"]')).toBeVisible({
+  await expect(frame.locator(loginPageElements.emailInput)).toBeVisible({
     timeout: 10000,
   });
 
@@ -66,13 +65,13 @@ export const loginWithVerifCode = async (page, context) => {
       verifCode = await findVerCode(page, context);
       if (verifCode !== oldVerCode) break;
       if (attempt === maxAttempts)
-        throw new Error(`Fresh verification code not received after ${maxAttempts} attempts`);
+        throw new Error(
+          `Fresh verification code not received after ${maxAttempts} attempts`,
+        );
     }
 
     await registerDeviceForlogin(page, verifCode);
   }
 
-  await expect(
-    page.locator('//header//button[contains(@class, "log-out")]'),
-  ).toBeVisible();
+  await expect(page.locator(loginPageElements.logoutButton)).toBeVisible();
 };
