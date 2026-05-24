@@ -28,7 +28,7 @@ test("Invalid credential", async ({ page }) => {
   await expect(errorMessage).toBeVisible();
 });
 
-test.only("Successfull login with verification code", async ({
+test("Successfull login with verification code", async ({
   page,
   context,
 }) => {
