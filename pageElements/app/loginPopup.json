@@ -1,0 +1,8 @@
+{
+  "emailInput": "input[name='email']",
+  "passwordInput": "input[name='password']",
+  "submitButton": "button[type='submit']",
+
+  "verificationCodeInput": "input[type='text']",
+  "continueButton": "button[data-ref='email-verification-continue']"
+}

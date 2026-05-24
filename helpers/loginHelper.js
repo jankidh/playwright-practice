@@ -1,7 +1,8 @@
 import { expect } from "@playwright/test";
 import { baseUrl, userId, userSecretKey } from "../constants.js";
 import { findVerCode } from "./inboxHelper.js";
-import loginPageElements from "../pageElements/app/loginPage.json" assert { type: "json" };
+import loginPopup from "../pageElements/app/loginPopup.json" assert { type: "json" };
+import common from "../pageElements/app/common.json" assert { type: "json" };
 
 export const login = async (
   page,
@@ -9,18 +10,18 @@ export const login = async (
 ) => {
   await page.goto(baseUrl);
 
-  const acceptCookies = page.locator(loginPageElements.acceptCookiesButton);
+  const acceptCookies = page.locator(common.acceptCookiesButton);
   await page.addLocatorHandler(acceptCookies, async () => {
     await acceptCookies.click();
   });
 
-  await page.locator(loginPageElements.loginButton).click();
+  await page.locator(common.loginButton).click();
 
-  const frame = page.frameLocator(loginPageElements.iframe);
+  const frame = page.frameLocator(common.iframe);
 
-  const emailInput = frame.locator(loginPageElements.emailInput);
-  const passwordInput = frame.locator(loginPageElements.passwordInput);
-  const submitButton = frame.locator(loginPageElements.submitButton);
+  const emailInput = frame.locator(loginPopup.emailInput);
+  const passwordInput = frame.locator(loginPopup.passwordInput);
+  const submitButton = frame.locator(loginPopup.submitButton);
 
   await emailInput.fill(email);
   await passwordInput.fill(password);
@@ -30,11 +31,11 @@ export const login = async (
 };
 
 export const registerDeviceForlogin = async (page, code) => {
-  const frame = page.frameLocator(loginPageElements.iframe);
+  const frame = page.frameLocator(common.iframe);
 
-  const verifCodeInput = frame.locator(loginPageElements.verificationCodeInput);
-  const continueButton = frame.locator(loginPageElements.continueButton);
-  const errorMessage = frame.locator(loginPageElements.errorMessage);
+  const verifCodeInput = frame.locator(loginPopup.verificationCodeInput);
+  const continueButton = frame.locator(loginPopup.continueButton);
+  const errorMessage = frame.locator(common.errorMessage);
 
   await verifCodeInput.fill(code);
   await continueButton.click();
@@ -49,7 +50,7 @@ export const registerDeviceForlogin = async (page, code) => {
 
 export const loginWithVerifCode = async (page, context) => {
   const frame = await login(page);
-  await expect(frame.locator(loginPageElements.emailInput)).toBeVisible({
+  await expect(frame.locator(loginPopup.verificationCodeInput)).toBeVisible({
     timeout: 10000,
   });
 
@@ -73,5 +74,5 @@ export const loginWithVerifCode = async (page, context) => {
     await registerDeviceForlogin(page, verifCode);
   }
 
-  await expect(page.locator(loginPageElements.logoutButton)).toBeVisible();
+  await expect(page.locator(common.logoutButton)).toBeVisible();
 };

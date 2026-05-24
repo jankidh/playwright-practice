@@ -60,6 +60,8 @@ End-to-end test suite for login flows, built with [Playwright](https://playwrigh
 
 ### Active
 
+Example of a test case within a test suite loginTest.spec.js
+
 - **Successful login with verification code** — logs in with valid credentials, intercepts the verification code from the Mailinator inbox, and completes device registration.
 
 ### Commented Out (require live environment)

@@ -1,11 +1,9 @@
 import { expect } from "@playwright/test";
 import { inboxUrl } from "../constants.js";
-import inboxPageElements from "../pageElements/mailinator/inboxPage.json" assert { type: "json" };
+import inbox from "../pageElements/mailinator/inboxPage.json" assert { type: "json" };
 
 const getLatestVerCode = async (inboxPage) => {
-  const verifCodeEmail = inboxPage.locator(
-    inboxPageElements.latestVerificationEmail,
-  );
+  const verifCodeEmail = inboxPage.locator(inbox.latestVerificationEmail);
   await verifCodeEmail.isVisible();
 
   await Promise.all([
@@ -16,8 +14,8 @@ const getLatestVerCode = async (inboxPage) => {
     verifCodeEmail.click(),
   ]);
 
-  const frame = inboxPage.frameLocator(inboxPageElements.iframe);
-  const codeLocator = frame.locator(inboxPageElements.verificationCode);
+  const frame = inboxPage.frameLocator(inbox.iframe);
+  const codeLocator = frame.locator(inbox.verificationCode);
   await codeLocator.scrollIntoViewIfNeeded();
   return (await codeLocator.textContent()).trim();
 };

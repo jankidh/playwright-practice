@@ -1,0 +1,10 @@
+{
+  "acceptCookiesButton": "button[data-ref='cookie.accept-all']",
+
+  "iframe": "iframe[data-ref='kyc-iframe']",
+
+  "loginButton": "ry-log-in-button",
+  "logoutButton": "//header//button[contains(@class,'log-out')]",
+
+  "errorMessage": "span._error"
+}
