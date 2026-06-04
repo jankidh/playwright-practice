@@ -8,7 +8,7 @@
     "test": "npx playwright test",
     "headed": "npm run test -- --headed",
     "debug": "npm run headed -- --debug",
-    "debugTest": "npm run headed tests/loginTest.spec.js"
+    "debugTest": "npm run headed tests/myAccount.spec.js"
   },
   "keywords": [],
   "author": "",
