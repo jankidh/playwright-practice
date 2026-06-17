@@ -39,10 +39,3 @@ test.only("Successfull login with verification code", async ({
 }) => {
   await loginWithVerifCode(page, context);
 });
-
-// test.only("Successfull signup with verification code", async ({
-//   page,
-//   context,
-// }) => {
-//   await signupWithVerifCode(page, context);
-// });
