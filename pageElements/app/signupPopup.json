@@ -1,0 +1,8 @@
+{
+  "signupLink": "button[data-ref='signup_login_signup']",
+  "emailInput": "input[type='email']",
+  "passwordInput": "input[type='password']",
+  "createAccountButton": "button[data-ref='signup_cta']",
+  "verificationCodeInput": "input[type='text']",
+  "continueButton": "button[data-ref='email-verification-continue']"
+}

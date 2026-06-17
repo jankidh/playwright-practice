@@ -4,10 +4,7 @@ import { findVerCode } from "./inboxHelper.js";
 import loginPopup from "../pageElements/app/loginPopup.json" assert { type: "json" };
 import common from "../pageElements/app/common.json" assert { type: "json" };
 
-export const login = async (
-  page,
-  { email = userId, password = userSecretKey } = {},
-) => {
+export const getLoginForm = async (page) => {
   await page.goto(baseUrl);
 
   const acceptCookies = page.locator(common.acceptCookiesButton);
@@ -18,6 +15,14 @@ export const login = async (
   await page.locator(common.loginButton).click();
 
   const frame = page.frameLocator(common.iframe);
+  return frame;
+};
+
+export const login = async (
+  page,
+  { email = userId, password = userSecretKey } = {},
+) => {
+  const frame = await getLoginForm(page);
 
   const emailInput = frame.locator(loginPopup.emailInput);
   const passwordInput = frame.locator(loginPopup.passwordInput);
@@ -30,7 +35,7 @@ export const login = async (
   return frame;
 };
 
-export const registerDeviceForlogin = async (page, code) => {
+export const submitVerificationCode = async (page, code) => {
   const frame = page.frameLocator(common.iframe);
 
   const verifCodeInput = frame.locator(loginPopup.verificationCodeInput);
@@ -48,14 +53,9 @@ export const registerDeviceForlogin = async (page, code) => {
   return !hasError;
 };
 
-export const loginWithVerifCode = async (page, context) => {
-  const frame = await login(page);
-  await expect(frame.locator(loginPopup.verificationCodeInput)).toBeVisible({
-    timeout: 10000,
-  });
-
+export const completeVerification = async (page, context) => {
   let verifCode = await findVerCode(page, context);
-  const success = await registerDeviceForlogin(page, verifCode);
+  const success = await submitVerificationCode(page, verifCode);
 
   if (!success) {
     const oldVerCode = verifCode;
@@ -71,8 +71,17 @@ export const loginWithVerifCode = async (page, context) => {
         );
     }
 
-    await registerDeviceForlogin(page, verifCode);
+    await submitVerificationCode(page, verifCode);
   }
+};
+
+export const loginWithVerifCode = async (page, context) => {
+  const frame = await login(page);
+  await expect(frame.locator(loginPopup.verificationCodeInput)).toBeVisible({
+    timeout: 10000,
+  });
+
+  await completeVerification(page, context);
 
   await expect(page.locator(common.logoutButton)).toBeVisible();
 };

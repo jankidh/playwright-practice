@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
 import { login, loginWithVerifCode } from "../helpers/loginHelper.js";
+import {
+  getSignupForm,
+  signUp,
+  signupWithVerifCode,
+} from "../helpers/signupHelper.js";
 
 test("Empty email address validation", async ({ page }) => {
   const frame = await login(page, { email: "" });
@@ -28,6 +33,16 @@ test("Invalid credential", async ({ page }) => {
   await expect(errorMessage).toBeVisible();
 });
 
-test("Successfull login with verification code", async ({ page, context }) => {
+test.only("Successfull login with verification code", async ({
+  page,
+  context,
+}) => {
   await loginWithVerifCode(page, context);
 });
+
+// test.only("Successfull signup with verification code", async ({
+//   page,
+//   context,
+// }) => {
+//   await signupWithVerifCode(page, context);
+// });
