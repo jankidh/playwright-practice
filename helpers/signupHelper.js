@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { newUserId, newUserSecretKey } from "../constants.js";
+import { newUserId, newUserSecretKey, newInboxUrl } from "../constants.js";
 import { getLoginForm, completeVerification } from "./loginHelper.js";
 import signupPopup from "../pageElements/app/signupPopup.json" assert { type: "json" };
 
@@ -17,6 +17,7 @@ export const signUp = async (
   page,
   { email = newUserId, password = newUserSecretKey } = {},
 ) => {
+  // console.log("Signing up with email:", email);
   const frame = await getSignupForm(page);
 
   const emailInput = frame.locator(signupPopup.emailInput);
@@ -37,7 +38,7 @@ export const signupWithVerifCode = async (page, context) => {
     timeout: 10000,
   });
 
-  await completeVerification(page, context);
+  await completeVerification(page, context, newInboxUrl);
 
   await expect(page.locator(common.logoutButton)).toBeVisible();
 };

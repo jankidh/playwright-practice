@@ -20,7 +20,7 @@ const getLatestVerCode = async (inboxPage) => {
   return (await codeLocator.textContent()).trim();
 };
 
-export const findVerCode = async (page, context) => {
+export const findVerCode = async (page, context, inboxUrl) => {
   const [inboxPage] = await Promise.all([
     context.waitForEvent("page"),
     page.evaluate((url) => window.open(url, "_blank"), inboxUrl),

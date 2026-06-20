@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { baseUrl, userId, userSecretKey } from "../constants.js";
+import { baseUrl, inboxUrl, userId, userSecretKey } from "../constants.js";
 import { findVerCode } from "./inboxHelper.js";
 import loginPopup from "../pageElements/app/loginPopup.json" assert { type: "json" };
 import common from "../pageElements/app/common.json" assert { type: "json" };
@@ -53,9 +53,12 @@ export const submitVerificationCode = async (page, code) => {
   return !hasError;
 };
 
-export const completeVerification = async (page, context) => {
-  let verifCode = await findVerCode(page, context);
+export const completeVerification = async (page, context, inboxUrl) => {
+  //console.log("Verification inbox:", inboxUrl);
+  let verifCode = await findVerCode(page, context, inboxUrl);
+  //console.log("Verification code:", verifCode);
   const success = await submitVerificationCode(page, verifCode);
+  // console.log("Verification success:", success);
 
   if (!success) {
     const oldVerCode = verifCode;
@@ -63,7 +66,7 @@ export const completeVerification = async (page, context) => {
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       await page.waitForTimeout(30_000 * attempt);
-      verifCode = await findVerCode(page, context);
+      verifCode = await findVerCode(page, context, inboxUrl);
       if (verifCode !== oldVerCode) break;
       if (attempt === maxAttempts)
         throw new Error(
@@ -81,7 +84,7 @@ export const loginWithVerifCode = async (page, context) => {
     timeout: 10000,
   });
 
-  await completeVerification(page, context);
+  await completeVerification(page, context, inboxUrl);
 
   await expect(page.locator(common.logoutButton)).toBeVisible();
 };
