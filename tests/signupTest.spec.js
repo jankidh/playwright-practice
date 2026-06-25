@@ -1,13 +1,6 @@
-import { test, expect } from "@playwright/test";
-import {
-  getNewUserEmail,
-  getUrlWithNewUserId,
-} from "../helpers/mailinator/userHelper.js";
+import { test } from "@playwright/test";
+import { signupWithVerifCode } from "../helpers/signupHelper.js";
 
-test("Successfull signup with verification code", () => {
-  // await signupWithVerifCode(page, context);
-
-  const email = getNewUserEmail();
-  const url = getUrlWithNewUserId(email);
-  console.log(url);
+test("Successful signup with verification code", async ({ page, context }) => {
+  await signupWithVerifCode(page, context);
 });

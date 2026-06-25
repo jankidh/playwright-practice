@@ -38,8 +38,8 @@ export const login = async (
 export const submitVerificationCode = async (page, code) => {
   const frame = page.frameLocator(common.iframe);
 
-  const verifCodeInput = frame.locator(loginPopup.verificationCodeInput);
-  const continueButton = frame.locator(loginPopup.continueButton);
+  const verifCodeInput = frame.locator(common.verificationCodeInput);
+  const continueButton = frame.locator(common.continueButton);
   const errorMessage = frame.locator(common.errorMessage);
 
   await verifCodeInput.fill(code);
@@ -60,9 +60,7 @@ export const completeVerification = async (
   email,
 ) => {
   let verifCode = await findVerCode(page, context, isActivation, email);
-  //console.log("Verification code:", verifCode);
   const success = await submitVerificationCode(page, verifCode);
-  // console.log("Verification success:", success);
 
   if (!success) {
     const oldVerCode = verifCode;
@@ -84,7 +82,7 @@ export const completeVerification = async (
 
 export const loginWithVerifCode = async (page, context) => {
   const frame = await login(page);
-  await expect(frame.locator(loginPopup.verificationCodeInput)).toBeVisible({
+  await expect(frame.locator(common.verificationCodeInput)).toBeVisible({
     timeout: 10000,
   });
 

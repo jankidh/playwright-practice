@@ -1,4 +1,4 @@
-import { newUserId, newInboxUrl } from "../../constants.js";
+import { newInboxUrl } from "../../constants.js";
 import { faker } from "@faker-js/faker";
 
 export const getNewUserEmail = () =>

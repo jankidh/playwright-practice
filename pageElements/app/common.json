@@ -6,5 +6,8 @@
   "loginButton": "ry-log-in-button",
   "logoutButton": "//header//button[contains(@class,'log-out')]",
 
-  "errorMessage": "span._error"
+  "errorMessage": "span._error",
+
+  "verificationCodeInput": "input[type='text']",
+  "continueButton": "button[data-ref='email-verification-continue']"
 }

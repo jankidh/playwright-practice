@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
-import { inboxUrl, inboxUrl } from "../../constants.js";
+import { inboxUrl } from "../../constants.js";
+import { getUrlWithNewUserId } from "./userHelper.js";
 import inbox from "../../pageElements/mailinator/inboxPage.json" assert { type: "json" };
 
 const getLatestVerCode = async (inboxPage, isActivation = false) => {
@@ -28,16 +29,15 @@ export const findVerCode = async (
   isActivation = false,
   newUserEmail = null,
 ) => {
-  const inboxUrl = isActivation ? getUrlWithNewUserId(newUserEmail) : inboxUrl;
+  const resolvedInboxUrl = isActivation ? getUrlWithNewUserId(newUserEmail) : inboxUrl;
   const [inboxPage] = await Promise.all([
     context.waitForEvent("page"),
-    page.evaluate((url) => window.open(url, "_blank"), inboxUrl),
+    page.evaluate((url) => window.open(url, "_blank"), resolvedInboxUrl),
   ]);
   await inboxPage.waitForLoadState();
   await inboxPage.bringToFront();
 
   await expect(inboxPage).toHaveTitle("Mailinator");
-  await page.pause();
   const code = await getLatestVerCode(inboxPage, isActivation);
 
   await inboxPage.close();

@@ -1,10 +1,9 @@
 import { expect } from "@playwright/test";
-import { newUserId, newUserSecretKey } from "../constants.js";
+import { newUserSecretKey } from "../constants.js";
 import { getLoginForm, completeVerification } from "./loginHelper.js";
 import signupPopup from "../pageElements/app/signupPopup.json" assert { type: "json" };
+import common from "../pageElements/app/common.json" assert { type: "json" };
 import { getNewUserEmail } from "./mailinator/userHelper.js";
-
-const newUserEmail = getNewUserEmail();
 
 export const getSignupForm = async (page) => {
   const frame = await getLoginForm(page);
@@ -18,9 +17,8 @@ export const getSignupForm = async (page) => {
 
 export const signUp = async (
   page,
-  { email = newUserEmail, password = newUserSecretKey } = {},
+  { email = getNewUserEmail(), password = newUserSecretKey } = {},
 ) => {
-  console.log("Signing up with email:", email);
   const frame = await getSignupForm(page);
 
   const emailInput = frame.locator(signupPopup.emailInput);
@@ -35,13 +33,14 @@ export const signUp = async (
 };
 
 export const signupWithVerifCode = async (page, context) => {
-  const frame = await signUp(page);
+  const email = getNewUserEmail();
+  const frame = await signUp(page, { email });
 
-  await expect(frame.locator(signupPopup.verificationCodeInput)).toBeVisible({
+  await expect(frame.locator(common.verificationCodeInput)).toBeVisible({
     timeout: 10000,
   });
 
-  await completeVerification(page, context, true);
+  await completeVerification(page, context, true, email);
 
   await expect(page.locator(common.logoutButton)).toBeVisible();
 };
