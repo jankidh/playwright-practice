@@ -51,11 +51,11 @@ End-to-end test suite for login flows, built with [Playwright](https://playwrigh
 │   ├── loginTest.spec.js    # Login test cases
 │   └── signupTest.spec.js   # Signup test cases
 ├── helpers/
-│   ├── loginHelper.js       # Login and device verification actions
-│   ├── signupHelper.js      # Signup actions
+│   ├── login.js             # Login and device verification actions
+│   ├── signup.js            # Signup actions
 │   └── mailinator/
-│       ├── inboxHelper.js   # Mailinator inbox interaction
-│       └── userHelper.js    # Test user email generation utilities
+│       ├── inbox.js         # Mailinator inbox interaction
+│       └── newUsers.js      # New user email generation and account logging
 ├── pageElements/
 │   ├── app/
 │   │   ├── common.json      # Shared selectors (iframe, buttons, verification inputs)

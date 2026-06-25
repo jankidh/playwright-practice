@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 import { userInboxUrl } from "../../constants.js";
-import { getUrlWithNewUserId } from "./userHelper.js";
+import { getUrlWithNewUserId } from "./newUsers.js";
 import inbox from "../../pageElements/mailinator/inboxPage.json" assert { type: "json" };
 
 const getLatestVerCode = async (inboxPage, isActivation = false) => {

@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 import { baseUrl, userId, userSecretKey } from "../constants.js";
-import { findVerCode } from "./mailinator/inboxHelper.js";
+import { findVerCode } from "./mailinator/inbox.js";
 import loginPopup from "../pageElements/app/loginPopup.json" assert { type: "json" };
 import common from "../pageElements/app/common.json" assert { type: "json" };
 
