@@ -1,8 +1,8 @@
 import { appendFile } from "fs/promises";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
-import { inboxUrl } from "../../constants.js";
 import { faker } from "@faker-js/faker";
+import { inboxUrl } from "../../constants.js";
 
 const LOG_FILE = resolve(dirname(fileURLToPath(import.meta.url)), "accountList.log");
 

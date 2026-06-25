@@ -1,0 +1,6 @@
+{
+  "latestVerificationEmail": "//tr[1]/td[3][contains(.,'code')]",
+  "iframe": "#html_msg_body",
+  "verificationCode": "//table[3]/tbody/tr/td[contains(.,' ')]",
+  "activationCode": "//table/tbody/tr/td[@class='code-box']"
+}

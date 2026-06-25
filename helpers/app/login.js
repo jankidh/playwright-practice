@@ -1,20 +1,21 @@
 import { expect } from "@playwright/test";
-import { baseUrl, userId, userSecretKey } from "../constants.js";
-import { findVerCode } from "./mailinator/inbox.js";
-import loginPopup from "../pageElements/app/loginPopup.json" assert { type: "json" };
-import common from "../pageElements/app/common.json" assert { type: "json" };
+import { baseUrl, userId, userSecretKey } from "../../constants.js";
+import { findVerCode } from "../mailinator/inbox.js";
+import loginModal from "../../pageElements/app/modal/login.json" assert { type: "json" };
+import modalCommon from "../../pageElements/app/modal/common.json" assert { type: "json" };
+import pageCommon from "../../pageElements/app/page/common.json" assert { type: "json" };
 
 export const getLoginForm = async (page) => {
   await page.goto(baseUrl);
 
-  const acceptCookies = page.locator(common.acceptCookiesButton);
+  const acceptCookies = page.locator(pageCommon.acceptCookiesButton);
   await page.addLocatorHandler(acceptCookies, async () => {
     await acceptCookies.click();
   });
 
-  await page.locator(common.loginButton).click();
+  await page.locator(pageCommon.loginButton).click();
 
-  const frame = page.frameLocator(common.iframe);
+  const frame = page.frameLocator(pageCommon.iframe);
   return frame;
 };
 
@@ -24,9 +25,9 @@ export const login = async (
 ) => {
   const frame = await getLoginForm(page);
 
-  const emailInput = frame.locator(loginPopup.emailInput);
-  const passwordInput = frame.locator(loginPopup.passwordInput);
-  const submitButton = frame.locator(loginPopup.submitButton);
+  const emailInput = frame.locator(loginModal.emailInput);
+  const passwordInput = frame.locator(loginModal.passwordInput);
+  const submitButton = frame.locator(loginModal.submitButton);
 
   await emailInput.fill(email);
   await passwordInput.fill(password);
@@ -36,11 +37,11 @@ export const login = async (
 };
 
 export const submitVerificationCode = async (page, code) => {
-  const frame = page.frameLocator(common.iframe);
+  const frame = page.frameLocator(pageCommon.iframe);
 
-  const verifCodeInput = frame.locator(common.verificationCodeInput);
-  const continueButton = frame.locator(common.continueButton);
-  const errorMessage = frame.locator(common.errorMessage);
+  const verifCodeInput = frame.locator(modalCommon.verificationCodeInput);
+  const continueButton = frame.locator(modalCommon.continueButton);
+  const errorMessage = frame.locator(modalCommon.errorMessage);
 
   await verifCodeInput.fill(code);
   await continueButton.click();
@@ -82,11 +83,11 @@ export const completeVerification = async (
 
 export const loginWithVerifCode = async (page, context) => {
   const frame = await login(page);
-  await expect(frame.locator(common.verificationCodeInput)).toBeVisible({
+  await expect(frame.locator(modalCommon.verificationCodeInput)).toBeVisible({
     timeout: 10000,
   });
 
   await completeVerification(page, context);
 
-  await expect(page.locator(common.logoutButton)).toBeVisible();
+  await expect(page.locator(pageCommon.logoutButton)).toBeVisible();
 };

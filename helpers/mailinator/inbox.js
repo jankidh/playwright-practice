@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { userInboxUrl } from "../../constants.js";
 import { getUrlWithNewUserId } from "./newUsers.js";
-import inbox from "../../pageElements/mailinator/inboxPage.json" assert { type: "json" };
+import inbox from "../../pageElements/mailinator/inbox.json" assert { type: "json" };
 
 const getLatestVerCode = async (inboxPage, isActivation = false) => {
   const verifCodeEmail = inboxPage.locator(inbox.latestVerificationEmail);

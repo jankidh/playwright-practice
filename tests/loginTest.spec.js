@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login, loginWithVerifCode } from "../helpers/login.js";
+import { login, loginWithVerifCode } from "../helpers/app/login.js";
 
 test("Empty email address validation", async ({ page }) => {
   const frame = await login(page, { email: "" });
