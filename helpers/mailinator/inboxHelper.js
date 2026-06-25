@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { inboxUrl } from "../../constants.js";
+import { userInboxUrl } from "../../constants.js";
 import { getUrlWithNewUserId } from "./userHelper.js";
 import inbox from "../../pageElements/mailinator/inboxPage.json" assert { type: "json" };
 
@@ -29,7 +29,9 @@ export const findVerCode = async (
   isActivation = false,
   newUserEmail = null,
 ) => {
-  const resolvedInboxUrl = isActivation ? getUrlWithNewUserId(newUserEmail) : inboxUrl;
+  const resolvedInboxUrl = isActivation
+    ? getUrlWithNewUserId(newUserEmail)
+    : userInboxUrl;
   const [inboxPage] = await Promise.all([
     context.waitForEvent("page"),
     page.evaluate((url) => window.open(url, "_blank"), resolvedInboxUrl),

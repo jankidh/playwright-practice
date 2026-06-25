@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { newUserSecretKey } from "../constants.js";
+import { userSecretKey } from "../constants.js";
 import { getLoginForm, completeVerification } from "./loginHelper.js";
 import signupPopup from "../pageElements/app/signupPopup.json" assert { type: "json" };
 import common from "../pageElements/app/common.json" assert { type: "json" };
@@ -17,7 +17,7 @@ export const getSignupForm = async (page) => {
 
 export const signUp = async (
   page,
-  { email = getNewUserEmail(), password = newUserSecretKey } = {},
+  { email = getNewUserEmail(), password = userSecretKey } = {},
 ) => {
   const frame = await getSignupForm(page);
 

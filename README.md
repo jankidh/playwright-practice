@@ -27,15 +27,12 @@ End-to-end test suite for login flows, built with [Playwright](https://playwrigh
    cp .env.template .env
    ```
 
-   | Variable              | Description                                                      |
-   | --------------------- | ---------------------------------------------------------------- |
-   | `BASE_URL`            | URL of the application under test                                |
-   | `USER_ID`             | Existing test account email address                              |
-   | `USER_SECRET_KEY`     | Existing test account password                                   |
-   | `INBOX_URL`           | Mailinator inbox URL for the existing user verification email    |
-   | `NEW_USER_ID`         | Email used for new account creation tests                        |
-   | `NEW_USER_SECRET_KEY` | Password for the new test account                                |
-   | `NEW_INBOX_URL`       | Mailinator inbox base URL for new user verification email        |
+   | Variable          | Description                                                      |
+   | ----------------- | ---------------------------------------------------------------- |
+   | `BASE_URL`        | URL of the application under test                                |
+   | `USER_ID`         | Test account email address                                       |
+   | `USER_SECRET_KEY` | Test account password (also used for new account signup)         |
+   | `INBOX_URL`       | Mailinator inbox base URL for receiving verification code emails |
 
 ## Running Tests
 
