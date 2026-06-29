@@ -9,3 +9,6 @@ node_modules/
 
 # dotenv environment variable files
 .env
+
+# generated test data
+/helpers/mailinator/accountList.log

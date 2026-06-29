@@ -1,0 +1,7 @@
+{
+  "emailInput": "input[name='email']",
+  "passwordInput": "input[name='password']",
+  "errorMessage": "span._error",
+  "verificationCodeInput": "input[type='text']",
+  "continueButton": "button[data-ref='email-verification-continue']"
+}
