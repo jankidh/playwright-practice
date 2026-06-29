@@ -6,11 +6,13 @@ import { inboxUrl } from "../../constants.js";
 
 const LOG_FILE = resolve(dirname(fileURLToPath(import.meta.url)), "accountList.log");
 
+const emailLocalPart = (email) => email.replace(/@.*/, "");
+
 export const getNewUserEmail = () =>
-  faker.internet.email().replace(/@.*/, "@mailinator.com");
+  `${emailLocalPart(faker.internet.email())}@mailinator.com`;
 
 export const getUrlWithNewUserId = (newUserEmail) =>
-  `${inboxUrl}${newUserEmail.replace(/@.*/, "")}`;
+  `${inboxUrl}${emailLocalPart(newUserEmail)}`;
 
 export const logNewAccount = async (email) => {
   await appendFile(

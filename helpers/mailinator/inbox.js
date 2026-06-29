@@ -5,7 +5,7 @@ import inbox from "../../pageElements/mailinator/inbox.json" assert { type: "jso
 
 const getLatestVerCode = async (inboxPage, isActivation = false) => {
   const verifCodeEmail = inboxPage.locator(inbox.latestVerificationEmail);
-  await verifCodeEmail.isVisible();
+  await verifCodeEmail.waitFor({ state: "visible" });
 
   await Promise.all([
     inboxPage.waitForURL(
@@ -19,7 +19,6 @@ const getLatestVerCode = async (inboxPage, isActivation = false) => {
   const codeLocator = frame.locator(
     isActivation ? inbox.activationCode : inbox.verificationCode,
   );
-  await codeLocator.scrollIntoViewIfNeeded();
   return (await codeLocator.textContent()).trim();
 };
 

@@ -1,6 +1,4 @@
 {
   "signupLink": "button[data-ref='signup_login_signup']",
-  "emailInput": "input[name='email']",
-  "passwordInput": "input[name='password']",
   "submitButton": "button[type='submit']"
 }

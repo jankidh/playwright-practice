@@ -25,8 +25,8 @@ export const login = async (
 ) => {
   const frame = await getLoginForm(page);
 
-  const emailInput = frame.locator(loginModal.emailInput);
-  const passwordInput = frame.locator(loginModal.passwordInput);
+  const emailInput = frame.locator(modalCommon.emailInput);
+  const passwordInput = frame.locator(modalCommon.passwordInput);
   const submitButton = frame.locator(loginModal.submitButton);
 
   await emailInput.fill(email);
@@ -57,7 +57,7 @@ export const submitVerificationCode = async (page, code) => {
 export const completeVerification = async (
   page,
   context,
-  isActivation,
+  isActivation = false,
   email,
 ) => {
   let verifCode = await findVerCode(page, context, isActivation, email);
