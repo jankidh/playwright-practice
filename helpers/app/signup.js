@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { getLoginForm, completeVerification } from "./login.js";
 import { getNewUserEmail, logNewAccount } from "../mailinator/newUsers.js";
-import { userSecretKey } from "../../constants.js";
+import { isCi, userSecretKey } from "../../constants.js";
 import loginModal from "../../pageElements/app/modal/login.json" assert { type: "json" };
 import modalCommon from "../../pageElements/app/modal/common.json" assert { type: "json" };
 import signupModal from "../../pageElements/app/modal/signup.json" assert { type: "json" };
@@ -46,5 +46,7 @@ export const signupWithVerifCode = async (page, context) => {
 
   await expect(page.locator(pageCommon.logoutButton)).toBeVisible();
 
-  await logNewAccount(email);
+  if (!isCi) {
+    await logNewAccount(email);
+  }
 };
