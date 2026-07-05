@@ -51,18 +51,22 @@ End-to-end test suite for login flows, built with [Playwright](https://playwrigh
 │   ├── loginTest.spec.js    # Login test cases
 │   └── signupTest.spec.js   # Signup test cases
 ├── helpers/
-│   ├── login.js             # Login and device verification actions
-│   ├── signup.js            # Signup actions
+│   ├── app/
+│   │   ├── login.js         # Login and device verification actions
+│   │   └── signup.js        # Signup actions
 │   └── mailinator/
 │       ├── inbox.js         # Mailinator inbox interaction
 │       └── newUsers.js      # New user email generation and account logging
 ├── pageElements/
 │   ├── app/
-│   │   ├── common.json      # Shared selectors (iframe, buttons, verification inputs)
-│   │   ├── loginPopup.json  # Login form selectors
-│   │   └── signupPopup.json # Signup form selectors
+│   │   ├── modal/
+│   │   │   ├── common.json  # Shared modal selectors (email, password, verification)
+│   │   │   ├── login.json   # Login modal selectors
+│   │   │   └── signup.json  # Signup modal selectors
+│   │   └── page/
+│   │       └── common.json  # Page-level selectors (iframe, header buttons, cookies)
 │   └── mailinator/
-│       └── inboxPage.json   # Mailinator inbox selectors
+│       └── inbox.json       # Mailinator inbox selectors
 ├── constants.js             # Environment variable exports
 ├── playwright.config.js     # Playwright configuration
 └── .env.template            # Environment variable template
