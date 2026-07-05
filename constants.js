@@ -1,6 +1,8 @@
 import "dotenv/config";
 
-const env = process.env;
+export const env = process.env;
+
+export const isCi = env.CI;
 
 export const baseUrl = env.BASE_URL;
 export const inboxUrl = env.INBOX_URL;
