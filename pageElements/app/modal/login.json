@@ -1,0 +1,4 @@
+{
+  "signupLink": "button[data-ref='signup_login_signup']",
+  "submitButton": "button[type='submit']"
+}

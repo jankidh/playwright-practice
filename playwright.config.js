@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from "@playwright/test";
+import { isCi } from "./constants.js";
 
 /**
  * Read environment variables from file.
@@ -17,10 +18,11 @@ export default defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: !!isCi,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: isCi ? 2 : 0,
   /* Opt out of parallel tests on CI. */
+
   workers: process.env.CI ? 1 : undefined,
   timeout: 90_000,
   expect: { timeout: 90_000 },
@@ -80,6 +82,6 @@ export default defineConfig({
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
+  //   reuseExistingServer: !isCi,
   // },
 });

@@ -1,0 +1,3 @@
+{
+  "createAccountButton": "button[data-ref='signup_cta']"
+}
