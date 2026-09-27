@@ -25,6 +25,7 @@ jobs:
           USER_ID: ${{secrets.USER_ID}}
           USER_SECRET_KEY: ${{secrets.USER_SECRET_KEY}}
           INBOX_URL: ${{secrets.INBOX_URL}}
+          USER_PROFILE_PATH: ${{secrets.USER_PROFILE_PATH}}
       - uses: actions/upload-artifact@v4.6.2
         if: ${{ !cancelled() }}
         with:

@@ -1,0 +1,4 @@
+{
+  "myBookingsButton": "[data-ref='main-links__my_bookings']",
+  "myAccountMenu": "[data-ref='cs-item__account']"
+}
