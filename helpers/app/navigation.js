@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
-import { userProfileURL } from "../constants.js";
-import { loginWithVerifCode } from "./loginHelper.js";
-import userProfile from "../pageElements/app/userProfile.json" assert { type: "json" };
+import { userProfileURL } from "../../constants.js";
+import { loginWithVerifCode } from "./login.js";
+import userProfile from "../../pageElements/app/page/userProfile.json" assert { type: "json" };
 
 export const goToUserBookings = async (page, context) => {
   await loginWithVerifCode(page, context);

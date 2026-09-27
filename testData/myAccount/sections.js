@@ -1,0 +1,61 @@
+import { userId } from "../../constants.js";
+import userAccount from "../../pageElements/app/page/userAccount.json" assert { type: "json" };
+
+export const getSection = ({ fullName = "", dob = "", phone = "" } = {}) => [
+  {
+    name: "Full name",
+    subsection: userAccount.fullNameSection,
+    label: userAccount.fullNameLabel,
+    labelText: "First name and surname",
+    value: userAccount.fullNameValue,
+    valueText: fullName,
+    button: userAccount.fullNameAddButton,
+    buttonText: "Add",
+  },
+  {
+    name: "Date of birth",
+    subsection: userAccount.dobSection,
+    label: userAccount.dobLabel,
+    labelText: "Date of birth",
+    value: userAccount.dobValue,
+    valueText: dob,
+    button: userAccount.dobAddButton,
+    buttonText: "Add",
+  },
+  {
+    name: "Email",
+    subsection: userAccount.emailSection,
+    label: userAccount.emailLabel,
+    labelText: "Email address",
+    value: userAccount.emailValue,
+    valueText: userId,
+  },
+  {
+    name: "Phone",
+    subsection: userAccount.phoneSection,
+    label: userAccount.phoneLabel,
+    labelText: "Phone number",
+    value: userAccount.phoneValue,
+    valueText: phone,
+    button: userAccount.phoneAddButton,
+    buttonText: "Add",
+  },
+  {
+    name: "Password",
+    subsection: userAccount.passwordSection,
+    label: userAccount.passwordLabel,
+    labelText: "Password",
+    value: userAccount.passwordValue,
+    valueText: "*******",
+    button: userAccount.passwordEditButton,
+    buttonText: "Edit",
+  },
+  {
+    name: "Socials",
+    subsection: userAccount.socialsSection,
+    label: userAccount.socialsLabel,
+    labelText: "Socials",
+    button: userAccount.socialsManageButton,
+    buttonText: "Manage",
+  },
+];
